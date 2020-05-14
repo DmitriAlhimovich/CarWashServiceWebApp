@@ -13,6 +13,11 @@ import { ServicesComponent } from './services/services.component';
 import { CustomersComponent } from './customers/customers.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { AddAppointmentComponent } from './add-appoinment/add-appointment.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatSliderModule } from '@angular/material/slider';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -38,7 +43,11 @@ import { AddAppointmentComponent } from './add-appoinment/add-appointment.compon
       { path: 'customers', component: ServicesComponent },
       { path: 'appointments', component: AppointmentsComponent },
       { path: 'add-appointment', component: AddAppointmentComponent },
-    ])
+    ]),
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatTreeModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
