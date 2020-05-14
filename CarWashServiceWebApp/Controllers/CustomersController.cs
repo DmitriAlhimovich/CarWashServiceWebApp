@@ -13,8 +13,6 @@ namespace CarWashServiceWebApp.Controllers
     [Route("api/[controller]")]
     public class CustomersController : ControllerBase
     {
-
-
         private readonly ILogger<CustomersController> _logger;
 
         public CustomersController(ILogger<CustomersController> logger)
@@ -31,6 +29,19 @@ namespace CarWashServiceWebApp.Controllers
 
                 return list;
             }
+        }
+
+        [HttpPost()]
+        public IActionResult Add(Customer customer)
+        {
+            using (var context = new CarWashServiceContext())
+            {
+                customer.RegistrationDate = DateTime.Now;
+                context.Customers.Add(customer);
+                context.SaveChanges();
+            }
+
+            return Ok();
         }
     }
 }

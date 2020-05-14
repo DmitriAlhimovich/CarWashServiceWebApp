@@ -25,32 +25,32 @@ export class AddAppointmentComponent {
   private router: Router;
 
   constructor(router: Router, http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.appointment = new Appointment();
-    //this.appointment.servicesIds = new Array();
+    this.appointment = new Appointment();    
     this.httpClient = http;
     this.baseUrl = baseUrl;
     this.router = router;
-    //this.selectedServices
     http.get<Service[]>(baseUrl + 'api/services').subscribe(result => {
-      this.allServices = result;
+      this.allServices = result;      
     }, error => console.error(error));
     http.get<Customer[]>(baseUrl + 'api/customers').subscribe(result => {
       this.allCustomers = result;
-    }, error => console.error(error));    
+    }, error => console.error(error));
+
   }
 
   public addAppointment(appointment: Appointment) {
     let url = this.baseUrl + 'api/appointments';
     appointment.customerId = Number.parseInt(this.selectedCustomer);
+    appointment.serviceId = Number.parseInt(this.selectedService);
     //appointment.servicesIds = this.selectedServices.map(s => s.id);
-    appointment.servicesIds = [];
-    appointment.servicesIds.push(Number.parseInt(this.selectedService));
+    //appointment.servicesIds = [];
+    //appointment.servicesIds = this.allServices.filter(s => s.checked).map(s => s.serviceId);
 
     var isAdded = this.httpClient.post<Appointment>(url, appointment, httpOptions).subscribe(
       response => {
         this.router.navigateByUrl('/appointments');
       },
-      err => console.log(err),
+      err => { console.log(err) },
     );
 
 

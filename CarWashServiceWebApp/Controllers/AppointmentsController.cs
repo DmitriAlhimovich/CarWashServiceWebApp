@@ -23,13 +23,21 @@ namespace CarWashServiceWebApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Appointment> Index()
-        {
+        public IEnumerable<AppointmentDto> Index()
+        {            
             using (var context = new CarWashServiceContext())
             {
-                var list = context.Appointments.OrderByDescending(a => a.StartTime).ToList();
-
-                return list;
+                return context.Appointments.OrderByDescending(a => a.StartTime)
+                    .Select(a => new AppointmentDto
+                    {
+                        AppointmentId = a.AppointmentId,
+                        CustomerId = a.Customer.CustomerId,
+                        CustomerName = $"{a.Customer.FirstName} {a.Customer.LastName} ",
+                        ServiceId = a.Service.ServiceId,
+                        ServiceTitle = a.Service.Title,
+                        StartTime = a.StartTime,
+                        Cost = a.Service.Price
+                    }).ToList();                
             }
         }
 
@@ -41,17 +49,11 @@ namespace CarWashServiceWebApp.Controllers
                 var appointment = new Appointment
                 {
                     StartTime = appointmentDto.StartTime,
-                    Customer = context.Customers.First(c => c.CustomerId == appointmentDto.CustomerId)
+                    Customer = context.Customers.First(c => c.CustomerId == appointmentDto.CustomerId),
+                    Service = context.Services.First(c => c.ServiceId == appointmentDto.ServiceId)
                 };
 
-                context.Appointments.Add(appointment);
-                context.AppointmentServices.AddRange(
-                    appointmentDto.ServicesIds.Select(id => new AppointmentService()
-                    {
-                        Appointment = appointment,
-                        Service = context.Services.First(s => s.ServiceId == id)
-                    })
-                    );
+                context.Appointments.Add(appointment);                
                 context.SaveChanges();
             }
 

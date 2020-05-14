@@ -1,0 +1,29 @@
+<h1 id="tableLabel">Add Service</h1>
+
+<p *ngIf="!service"><em>Loading...</em></p>
+
+<div *ngIf="service">
+  <div *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+  <form>
+    <div>
+      <div class="form-group">
+        <label>Service Title</label>
+        <input type="text" [(ngModel)]="service.title" name="title" placeholder="Service Title" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Service Description</label>
+        <input type="text" [(ngModel)]="service.description" name="description" placeholder="Service Description" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Price</label>
+        <input type="number" [(ngModel)]="service.price" name="price" placeholder="Service Price" class="form-control" />
+      </div>
+
+
+    </div>
+
+    <button (click)="addService(service)" class="btn btn-primary">Add</button>
+  </form>
+</div>

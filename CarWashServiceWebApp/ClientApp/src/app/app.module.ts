@@ -13,11 +13,14 @@ import { ServicesComponent } from './services/services.component';
 import { CustomersComponent } from './customers/customers.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { AddAppointmentComponent } from './add-appoinment/add-appointment.component';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
+import { AddServiceComponent } from './add-service/add-service.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { MatIconModule } from '@angular/material/icon';
     ServicesComponent,
     CustomersComponent,
     AppointmentsComponent,
-    AddAppointmentComponent
+    AddAppointmentComponent,
+    AddCustomerComponent,
+    AddServiceComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,14 +45,17 @@ import { MatIconModule } from '@angular/material/icon';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'services', component: ServicesComponent },
-      { path: 'customers', component: ServicesComponent },
+      { path: 'customers', component: CustomersComponent },
       { path: 'appointments', component: AppointmentsComponent },
       { path: 'add-appointment', component: AddAppointmentComponent },
+      { path: 'add-customer', component: AddCustomerComponent },
+      { path: 'add-service', component: AddServiceComponent },
     ]),
     BrowserAnimationsModule,
     MatSliderModule,
     MatTreeModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

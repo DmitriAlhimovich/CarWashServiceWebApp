@@ -4,21 +4,33 @@
 
 <p *ngIf="!customers"><em>Loading...</em></p>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="customers">
-  <thead>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Phone</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let customer of customers">
-      <td>{{ customer.firstName }}</td>
-      <td>{{ customer.lastName }}</td>
-      <td>{{ customer.phone }}</td>
-      <td>{{ customer.email}}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="row mb-3">
+  <div class="col-lg-3">
+    <a [routerLink]='["/add-customer"]' class="btn btn-primary">
+      Add Customer
+    </a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-11">
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="customers">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers">
+          <td>{{ customer.firstName }}</td>
+          <td>{{ customer.lastName }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ customer.email}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

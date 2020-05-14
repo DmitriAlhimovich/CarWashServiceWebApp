@@ -2,6 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
+import { groupBy } from 'rxjs/internal/operators/groupBy';
 
 @Component({
   selector: 'app-services',
@@ -9,11 +11,12 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 })
 export class AppointmentsComponent {
   public appointments: Appointment[];
-
-  private _transformer = (node: FoodNode, level: number) => {
+  public appointmentsTreeByCustomers: AppointmentNode[];
+  public appointmentsTreeByServices: AppointmentNode[];
+  private _transformer = (node: AppointmentNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
-      name: node.name,
+      name: node.title,
       level: level,
     };
   }
@@ -27,18 +30,42 @@ export class AppointmentsComponent {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.dataSource.data = TREE_DATA;
+    this.appointmentsTreeByServices = [];
     http.get<Appointment[]>(baseUrl + 'api/appointments').subscribe(result => {
       this.appointments = result;
+      let groupByRes = this.appointments.reduce(function (h, obj) {
+        h[obj.serviceTitle] = (h[obj.serviceTitle] || []).concat(obj);
+        return h;
+      }, {}) as any[];
+      
+      groupByRes.forEach((key) => {
+        let appointmentNode = new AppointmentNode();
+        appointmentNode.title = key;
+        appointmentNode.children = groupByRes[key].map(a => a.startTime + " " + a.customerName);
+        this.appointmentsTreeByServices.push(appointmentNode);
+      }
+        
+      );
+      this.dataSource.data = this.appointmentsTreeByServices;
     }, error => console.error(error));
-  }
+  };
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+
 }
 
 export class Appointment {
   customerId: number;
   startTime: Date;
-  servicesIds: number[];     
+  customerName: string;
+  serviceId: number;
+  serviceTitle: string;
+  cost: number;
+}
+
+class AppointmentNode {
+  title: string;
+  children?: AppointmentNode[];
 }
 
 interface FoodNode {

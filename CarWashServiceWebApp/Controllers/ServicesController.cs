@@ -32,5 +32,18 @@ namespace CarWashServiceWebApp.Controllers
                 return list;
             }
         }
+
+        [HttpPost()]
+        public IActionResult Add(Service service)
+        {
+            using (var context = new CarWashServiceContext())
+            {
+                service.IsAvailable = true;
+                context.Services.Add(service);
+                context.SaveChanges();
+            }
+
+            return Ok();
+        }
     }
 }

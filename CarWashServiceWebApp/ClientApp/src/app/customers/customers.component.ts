@@ -15,7 +15,7 @@ export class CustomersComponent {
   }
 }
 
-export interface Customer {
+export class Customer {
   customerId: number;
   firstName: string;
   lastName: string;

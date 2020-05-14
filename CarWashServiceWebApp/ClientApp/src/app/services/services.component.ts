@@ -15,10 +15,10 @@ export class ServicesComponent {
   }
 }
 
-export interface Service {
+export class Service {
   serviceId: number;
   title: string;
   description: string;
   price: number;
-  duration: number;
+  duration: number;  
 }
