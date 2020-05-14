@@ -1,0 +1,38 @@
+<h1 id="tableLabel">Add Appointment</h1>
+
+<p *ngIf="!appointment"><em>Loading...</em></p>
+
+<div *ngIf="appointment">
+  <div *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+  <form>
+    <div>
+      <div class="form-group">
+        <label>Appointment Date</label>
+        <input type="date" [(ngModel)]="appointment.startTime" name="startTime" placeholder="Start Time" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Customer</label>
+        <select [(ngModel)]="selectedCustomer" id="customerSelect" name="customerSelectName" class="form-control">
+          <option *ngFor="let customer of allCustomers" [value]="customer.customerId">{{customer.firstName + " " + customer.lastName}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Service</label>
+        <select [(ngModel)]="selectedService" id="serviceSelect" name="serviceSelectName" class="form-control">
+          <option *ngFor="let service of allServices" [value]="service.serviceId">{{service.title}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <div *ngFor="let service of allServices">
+          <input type="checkbox" /> {{service.title}}
+        </div>
+      </div>
+
+    </div>
+
+    <button (click)="addAppointment(appointment)" class="btn btn-primary">Add</button>
+  </form>
+</div>

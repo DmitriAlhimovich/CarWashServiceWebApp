@@ -1,0 +1,22 @@
+<h1 id="tableLabel">Services List</h1>
+
+<p>Services available on our car wash service.</p>
+
+<p *ngIf="!services"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="services">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Duration</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let service of services">
+      <td>{{ service.title }}</td>
+      <td>{{ service.duration }}</td>
+      <td>{{ service.price }}</td>
+    </tr>
+  </tbody>
+</table>
