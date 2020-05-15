@@ -36,12 +36,11 @@ export class AppointmentsComponent {
       let groupByRes = this.appointments.reduce(function (h, obj) {
         h[obj.serviceTitle] = (h[obj.serviceTitle] || []).concat(obj);
         return h;
-      }, {}) as any[];
+      }, {});
       
-      groupByRes.forEach((key) => {
-        let appointmentNode = new AppointmentNode();
-        appointmentNode.title = key;
-        appointmentNode.children = groupByRes[key].map(a => a.startTime + " " + a.customerName);
+      Object.keys(groupByRes).forEach((key) => {
+        let appointmentNode = new AppointmentNode(" ".concat(key));        
+        appointmentNode.children = groupByRes[key].map(a => new AppointmentNode(" " + a.startTime + " " + a.customerName));
         this.appointmentsTreeByServices.push(appointmentNode);
       }
         
@@ -56,7 +55,7 @@ export class AppointmentsComponent {
 
 export class Appointment {
   customerId: number;
-  startTime: Date;
+  startTime: string;
   customerName: string;
   serviceId: number;
   serviceTitle: string;
@@ -66,6 +65,10 @@ export class Appointment {
 class AppointmentNode {
   title: string;
   children?: AppointmentNode[];
+
+  constructor(title: string) {
+    this.title = title;
+  }  
 }
 
 interface FoodNode {

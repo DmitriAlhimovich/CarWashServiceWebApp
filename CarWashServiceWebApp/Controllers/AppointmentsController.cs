@@ -35,7 +35,7 @@ namespace CarWashServiceWebApp.Controllers
                         CustomerName = $"{a.Customer.FirstName} {a.Customer.LastName} ",
                         ServiceId = a.Service.ServiceId,
                         ServiceTitle = a.Service.Title,
-                        StartTime = a.StartTime,
+                        StartTime = a.StartTime.ToShortDateString(),
                         Cost = a.Service.Price
                     }).ToList();                
             }
@@ -47,11 +47,12 @@ namespace CarWashServiceWebApp.Controllers
             using (var context = new CarWashServiceContext())
             {
                 var appointment = new Appointment
-                {
-                    StartTime = appointmentDto.StartTime,
+                {                    
                     Customer = context.Customers.First(c => c.CustomerId == appointmentDto.CustomerId),
                     Service = context.Services.First(c => c.ServiceId == appointmentDto.ServiceId)
                 };
+                if (DateTime.TryParse(appointmentDto.StartTime, out DateTime startTime))
+                    appointment.StartTime = startTime;
 
                 context.Appointments.Add(appointment);                
                 context.SaveChanges();

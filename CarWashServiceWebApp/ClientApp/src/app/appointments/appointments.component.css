@@ -1,0 +1,6 @@
+body {
+}
+
+mat-tree-node>button[disabled]{
+    display:none;
+}
