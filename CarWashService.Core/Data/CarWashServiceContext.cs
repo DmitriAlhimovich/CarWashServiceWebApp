@@ -1,17 +1,13 @@
-﻿using CarWashServiceWebApp.Models;
+﻿using CarWashService.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CarWashServiceWebApp.Data
+namespace CarWashService.Core.Data
 {
     public class CarWashServiceContext : DbContext
     {
         private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=CarWashServiceDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public CarWashServiceContext()
-        {            
+        {
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)

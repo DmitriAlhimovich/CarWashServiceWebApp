@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CarWashServiceWebApp.Models
+namespace CarWashService.Core.Models
 {
     [Table("AppointmentService")]
     public class AppointmentService
