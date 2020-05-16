@@ -40,7 +40,7 @@
             this.btnWeekly.TabIndex = 0;
             this.btnWeekly.Text = "Weekly Report";
             this.btnWeekly.UseVisualStyleBackColor = true;
-            this.btnWeekly.Click += new System.EventHandler(this.btnWeekly_Click);
+            this.btnWeekly.Click += new System.EventHandler(this.BtnWeekly_Click);
             // 
             // btnMonthly
             // 
@@ -50,11 +50,11 @@
             this.btnMonthly.TabIndex = 1;
             this.btnMonthly.Text = "Monthly Report";
             this.btnMonthly.UseVisualStyleBackColor = true;
-            this.btnWeekly.Click += new System.EventHandler(this.btnMonthly_Click);
+            this.btnMonthly.Click += new System.EventHandler(this.BtnMonthly_Click);
 
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(300, 250);
             this.Text = "Car Wash Reports";
             this.components.Add(this.btnMonthly);
             this.components.Add(this.btnWeekly);

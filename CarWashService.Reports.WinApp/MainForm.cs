@@ -1,13 +1,5 @@
-﻿using CarWashService.Core.Data;
-using CarWashService.Reports.WinApp.Reports;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CarWashService.Reports.WinApp
@@ -19,22 +11,28 @@ namespace CarWashService.Reports.WinApp
             InitializeComponent();
         }
 
-        private void btnWeekly_Click(object sender, EventArgs e)
+        private void BtnWeekly_Click(object sender, EventArgs e)
         {
-            using var context = new CarWashServiceContext();
+            AppointmentsReportGenerator reportGenerator =
+                new AppointmentsReportGenerator(new InDesignProvider());
 
-            //new InDesignProvider().WriteRows(new[] { "one", "twokk"});
-
-            var rows = context.Appointments
-                .Where(a => a.StartTime >= DateTime.Today.AddDays(-7))
-                .Select(a => $"{a.StartTime.ToShortDateString()} - {a.Customer.LastName}").ToList();
-
-            new InDesignProvider().WriteRows(rows); ;
+            reportGenerator.FillReport(new Dictionary<string, object>()
+            {
+                ["StartDate"] = DateTime.Now.AddDays(-7),
+                ["EndDate"] = DateTime.Now
+            });
         }
 
-        private void btnMonthly_Click(object sender, EventArgs e)
+        private void BtnMonthly_Click(object sender, EventArgs e)
         {
-            //CarWashService.Reports
+            SummaryReportGenerator reportGenerator =
+                new SummaryReportGenerator(new InDesignProvider());
+
+            reportGenerator.FillReport(new Dictionary<string, object>()
+            {
+                ["StartDate"] = DateTime.Now.AddDays(-30),
+                ["EndDate"] = DateTime.Now
+            });
         }
 
     }
