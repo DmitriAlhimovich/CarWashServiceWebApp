@@ -1,6 +1,6 @@
 ﻿namespace CarWashService.Reports
 {
-    public interface IInDesignProvider
+    public interface IReportProvider
     {
         InDesign.Document GetReportDocument(string templatePath);
     }

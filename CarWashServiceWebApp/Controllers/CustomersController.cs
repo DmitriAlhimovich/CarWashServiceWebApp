@@ -4,7 +4,6 @@ using System.Linq;
 using CarWashService.Core.Data;
 using CarWashService.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CarWashServiceWebApp.Controllers
 {
@@ -28,6 +27,18 @@ namespace CarWashServiceWebApp.Controllers
             {
                 customer.RegistrationDate = DateTime.Now;
                 context.Customers.Add(customer);
+                context.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            using (var context = new CarWashServiceContext())
+            {
+                context.Customers.Remove(context.Customers.FirstOrDefault(c => c.CustomerId == id));
                 context.SaveChanges();
             }
 

@@ -6,34 +6,54 @@ namespace CarWashService.Reports.WinApp
 {
     public partial class MainForm : Form
     {
-        public MainForm()
-        {
+        private readonly IAppointmentsReportGenerator appointmentsReportGenerator;
+        private readonly ISummaryReportGenerator summaryReportGenerator;
+
+        public MainForm(IAppointmentsReportGenerator appointmentsReportGenerator,
+            ISummaryReportGenerator summaryReportGenerator)
+        {            
+            this.appointmentsReportGenerator = appointmentsReportGenerator;
+            this.summaryReportGenerator = summaryReportGenerator;
             InitializeComponent();
         }
 
         private void BtnWeekly_Click(object sender, EventArgs e)
         {
-            AppointmentsReportGenerator reportGenerator =
-                new AppointmentsReportGenerator(new InDesignProvider());
+            StartReportGenerating();
 
-            reportGenerator.FillReport(new Dictionary<string, object>()
+            appointmentsReportGenerator.FillReport(new Dictionary<string, object>()
             {
                 ["StartDate"] = DateTime.Now.AddDays(-7),
                 ["EndDate"] = DateTime.Now
             });
-        }
+            EndReportGenerating();
+        }                
 
         private void BtnMonthly_Click(object sender, EventArgs e)
         {
-            SummaryReportGenerator reportGenerator =
-                new SummaryReportGenerator(new InDesignProvider());
+            StartReportGenerating();
 
-            reportGenerator.FillReport(new Dictionary<string, object>()
+            summaryReportGenerator.FillReport(new Dictionary<string, object>()
             {
                 ["StartDate"] = DateTime.Now.AddDays(-30),
                 ["EndDate"] = DateTime.Now
             });
+
+            EndReportGenerating();
         }
 
+        private void StartReportGenerating()
+        {
+            Cursor = Cursors.WaitCursor;
+            btnWeekly.Enabled = false;
+            btnMonthly.Enabled = false;
+        }
+
+        private void EndReportGenerating()
+        {
+            btnWeekly.Enabled = true;
+            btnMonthly.Enabled = true;
+            Cursor = Cursors.Default;
+        }
     }
 }

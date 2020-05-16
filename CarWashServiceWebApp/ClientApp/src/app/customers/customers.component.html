@@ -21,6 +21,7 @@
           <th>Last Name</th>
           <th>Phone</th>
           <th>Email</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -29,6 +30,9 @@
           <td>{{ customer.lastName }}</td>
           <td>{{ customer.phone }}</td>
           <td>{{ customer.email}}</td>
+          <td>
+            <button (click)="deleteCustomer(customer)" class="btn btn-link">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>

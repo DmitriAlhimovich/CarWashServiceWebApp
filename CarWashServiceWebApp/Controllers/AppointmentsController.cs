@@ -29,7 +29,7 @@ namespace CarWashServiceWebApp.Controllers
                 }).ToList();
         }
 
-        [HttpPost()]
+        [HttpPost("Add")]
         public IActionResult Add(AppointmentDto appointmentDto)
         {
             using (var context = new CarWashServiceContext())
@@ -43,6 +43,18 @@ namespace CarWashServiceWebApp.Controllers
                     appointment.StartTime = startTime;
 
                 context.Appointments.Add(appointment);
+                context.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {            
+            using (var context = new CarWashServiceContext())
+            {
+                context.Appointments.Remove(context.Appointments.FirstOrDefault(a => a.AppointmentId == id));
                 context.SaveChanges();
             }
 

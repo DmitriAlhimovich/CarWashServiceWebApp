@@ -48,7 +48,7 @@ export class AddAppointmentComponent {
 
     var isAdded = this.httpClient.post<Appointment>(url, appointment, httpOptions).subscribe(
       response => {
-        this.router.navigateByUrl('/appointments');
+        this.router.navigateByUrl('/');
       },
       err => { console.log(err) },
     );

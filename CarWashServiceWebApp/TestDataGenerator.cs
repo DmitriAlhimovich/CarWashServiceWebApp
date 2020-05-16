@@ -11,7 +11,7 @@ namespace CarWashServiceWebApp
         {
             GenerateCustomers();
             GenerateServices();
-
+            GenerateAppointments();
         }
 
         private void GenerateCustomers()
@@ -46,6 +46,34 @@ namespace CarWashServiceWebApp
             context.Services.Add(new Service { Title = "Wash and Vac", IsAvailable = true, Duration = new TimeSpan(0, 30, 0) });
             context.Services.Add(new Service { Title = "Interior cleaning", IsAvailable = true, Duration = new TimeSpan(0, 35, 0) });
             context.Services.Add(new Service { Title = "Interior and exterior", IsAvailable = true, Duration = new TimeSpan(0, 60, 0) });
+
+            context.SaveChanges();
+        }
+
+        private void GenerateAppointments()
+        {
+            Random random1 = new Random(42);
+            Random random2 = new Random(55);
+            Random random3 = new Random(67);
+
+            using var context = new CarWashServiceContext();
+            if (context.Appointments.Any())
+                return;            
+
+            for (int i = 0; i < 10; i++)
+            {
+                var randomDaysAgo = -random1.Next(1, 5);
+                var randomServiceId = random2.Next(1, 4);
+                var randomCustomerId = random3.Next(1, 10);
+                
+                context.Appointments.Add(new Appointment
+                {
+                    StartTime = DateTime.Now.AddDays(randomDaysAgo),
+                    Service = context.Services.First(s => s.ServiceId == randomServiceId),
+                    Customer = context.Customers.First(c => c.CustomerId == randomCustomerId),
+                    Amount = 1
+                });
+            }
 
             context.SaveChanges();
         }

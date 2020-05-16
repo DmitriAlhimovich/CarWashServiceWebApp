@@ -3,14 +3,13 @@ using System.Linq;
 using CarWashService.Core.Data;
 using CarWashService.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CarWashServiceWebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class ServicesController : ControllerBase
-    {        
+    {
         [HttpGet]
         public IEnumerable<Service> Index()
         {
@@ -27,6 +26,18 @@ namespace CarWashServiceWebApp.Controllers
             {
                 service.IsAvailable = true;
                 context.Services.Add(service);
+                context.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            using (var context = new CarWashServiceContext())
+            {
+                context.Services.Remove(context.Services.FirstOrDefault(s => s.ServiceId == id));
                 context.SaveChanges();
             }
 

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,22 @@ namespace CarWashService.Reports.WinApp
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            var services = new ServiceCollection();
+
+            ConfigureServices(services);
+
+            using ServiceProvider serviceProvider = services.BuildServiceProvider();
+            var mainForm = serviceProvider.GetRequiredService<MainForm>();
+            Application.Run(mainForm);
+        }
+
+        private static void ConfigureServices(ServiceCollection services)
+        {
+            services.AddSingleton<IReportProvider, InDesignProvider>();
+            services.AddSingleton<IAppointmentsReportGenerator, AppointmentsReportGenerator>();
+            services.AddSingleton<ISummaryReportGenerator, SummaryReportGenerator>();
+            services.AddScoped<MainForm>();
         }
     }
 }

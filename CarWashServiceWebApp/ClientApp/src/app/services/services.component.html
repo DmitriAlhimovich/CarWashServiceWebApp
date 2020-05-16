@@ -18,16 +18,18 @@
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="services">
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Duration</th>
+          <th>Title</th>          
           <th>Price</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let service of services">
-          <td>{{ service.title }}</td>
-          <td>{{ service.duration }}</td>
+          <td>{{ service.title }}</td>          
           <td>{{ service.price }}</td>
+          <td>
+            <button (click)="deleteService(service)" class="btn btn-link">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>

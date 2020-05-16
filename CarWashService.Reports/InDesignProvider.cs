@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CarWashService.Reports
 {
-    public class InDesignProvider : IInDesignProvider
+    public class InDesignProvider : IReportProvider
     {
         public InDesign.Document GetReportDocument(string templatePath)
         {

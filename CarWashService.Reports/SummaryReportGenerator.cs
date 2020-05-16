@@ -8,7 +8,7 @@ namespace CarWashService.Reports
 {
     public class SummaryReportGenerator : ISummaryReportGenerator
     {        
-        private readonly IInDesignProvider provider;
+        private readonly IReportProvider provider;
         
         private const string StartDateParamKey = "StartDate";
         private const string EndDateParamKey = "EndDate";
@@ -16,7 +16,7 @@ namespace CarWashService.Reports
         private const string ReportTemplatePath = "c:/Downloads/CarWashSummaryReport.indd";
         private const string PdfFilePathTemplate = "c:/Downloads/summary_{0}-{1}.pdf";
 
-        public SummaryReportGenerator(IInDesignProvider provider)
+        public SummaryReportGenerator(IReportProvider provider)
         {
             this.provider = provider;
         }
@@ -46,7 +46,7 @@ namespace CarWashService.Reports
                .Where(a => a.StartTime >= startDate && a.StartTime <= endDate).AsEnumerable()
                .GroupBy(a => a.Service);
 
-            var reportRows = groups.Select(g => $"{g.Key.Title} - {g.Sum(a => a.Service.Price)}").ToList();
+            var reportRows = groups.OrderBy(g => g.Key.Title).Select(g => $"{g.Key.Title} - {g.Sum(a => a.Service.Price)}").ToList();
 
             return string.Join("\n", reportRows);
         }

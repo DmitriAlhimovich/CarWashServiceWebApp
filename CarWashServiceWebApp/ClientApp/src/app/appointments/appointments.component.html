@@ -23,6 +23,7 @@
               <th>Customer</th>
               <th>Service</th>
               <th>Cost</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -31,6 +32,9 @@
               <td>{{ appointment.customerName }}</td>
               <td>{{ appointment.serviceTitle }}</td>
               <td>{{ appointment.cost }}</td>
+              <td>
+                <button (click)="deleteAppointment(appointment)" class="btn btn-link">Delete</button>
+              </td>
             </tr>
           </tbody>
         </table>

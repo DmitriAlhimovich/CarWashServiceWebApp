@@ -1,9 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
 import { groupBy } from 'rxjs/internal/operators/groupBy';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),  
+};
 
 @Component({
   selector: 'app-services',
@@ -13,6 +17,8 @@ export class AppointmentsComponent {
   public appointments: Appointment[];
   public appointmentsTreeByCustomers: AppointmentNode[];
   public appointmentsTreeByServices: AppointmentNode[];
+  private baseUrl;
+  private httpClient: HttpClient;
   private _transformer = (node: AppointmentNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
@@ -29,9 +35,11 @@ export class AppointmentsComponent {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.baseUrl = baseUrl;
+    this.httpClient = httpClient;
     this.appointmentsTreeByServices = [];
-    http.get<Appointment[]>(baseUrl + 'api/appointments').subscribe(result => {
+    httpClient.get<Appointment[]>(baseUrl + 'api/appointments').subscribe(result => {
       this.appointments = result;
       let groupByRes = this.appointments.reduce(function (h, obj) {
         h[obj.serviceTitle] = (h[obj.serviceTitle] || []).concat(obj);
@@ -50,10 +58,21 @@ export class AppointmentsComponent {
   };
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
+  public deleteAppointment(appointment: Appointment) {
+    let url = this.baseUrl + 'api/appointments';    
+
+    this.httpClient.delete(url + "/" + appointment.appointmentId).subscribe(
+      response => {
+        this.appointments = this.appointments.filter(a => a.appointmentId != appointment.appointmentId);
+      },
+      err => { console.log(err) },
+    );
+  }
 
 }
 
 export class Appointment {
+  appointmentId: number;
   customerId: number;
   startTime: string;
   customerName: string;
