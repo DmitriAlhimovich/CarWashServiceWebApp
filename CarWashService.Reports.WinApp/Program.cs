@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +21,29 @@ namespace CarWashService.Reports.WinApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var services = new ServiceCollection();
+            var host = Host.CreateDefaultBuilder()
+             .ConfigureAppConfiguration((context, builder) =>
+             {                 
+                 builder.AddJsonFile("appsettings.json", optional: true);
+             })
+             .ConfigureServices((context, services) =>
+             {
+                 ConfigureServices(context.Configuration, services);
+             })             
+             .Build();
 
-            ConfigureServices(services);
-
-            using ServiceProvider serviceProvider = services.BuildServiceProvider();
-            var mainForm = serviceProvider.GetRequiredService<MainForm>();
+            var services = host.Services;
+            var mainForm = services.GetRequiredService<MainForm>();
+                                                
             Application.Run(mainForm);
         }
 
-        private static void ConfigureServices(ServiceCollection services)
+        private static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
             services.AddSingleton<IReportProvider, InDesignProvider>();
             services.AddSingleton<IAppointmentsReportGenerator, AppointmentsReportGenerator>();
             services.AddSingleton<ISummaryReportGenerator, SummaryReportGenerator>();
             services.AddScoped<MainForm>();
-        }
+        }        
     }
 }

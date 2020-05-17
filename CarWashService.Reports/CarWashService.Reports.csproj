@@ -19,4 +19,9 @@
     <ProjectReference Include="..\CarWashService.Core\CarWashService.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PdfReports\" />
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
 </Project>

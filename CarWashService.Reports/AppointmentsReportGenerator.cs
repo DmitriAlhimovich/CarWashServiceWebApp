@@ -1,5 +1,6 @@
 ﻿using CarWashService.Core.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,17 @@ namespace CarWashService.Reports
     public class AppointmentsReportGenerator : IAppointmentsReportGenerator
     {
         private readonly IReportProvider provider;
-
+        private readonly IConfiguration configuration;
+        private readonly ReportsConfiguration reportsConfiguration;
         private const string StartDateParamKey = "StartDate";
-        private const string EndDateParamKey = "EndDate";
-        private const int PdfType = 1952403524;
-        private const string ReportTemplatePath = "c:/Downloads/CarWashAppointmentsReport.indd";
-        private const string PdfFilePathTemplate = "c:/Downloads/appointments_{0}-{1}.pdf";
+        private const string EndDateParamKey = "EndDate";         
 
-        public AppointmentsReportGenerator(IReportProvider provider)
+        public AppointmentsReportGenerator(IConfiguration configuration, IReportProvider provider)
         {
+            this.configuration = configuration;
+            reportsConfiguration = new ReportsConfiguration();
+            this.configuration.GetSection("ReportsConfiguration").Bind(reportsConfiguration);
+
             this.provider = provider;
         }
 
@@ -26,7 +29,7 @@ namespace CarWashService.Reports
             var startDate = (DateTime)paramsDict[StartDateParamKey];
             var endDate = (DateTime)paramsDict[EndDateParamKey];
 
-            var doc = provider.GetReportDocument(ReportTemplatePath);
+            var doc = provider.GetReportDocument(reportsConfiguration.AppointmentsReportTemplatePath);
             InDesign.Page page = (InDesign.Page)doc.Pages[1];
 
             InDesign.TextFrame dataFrame = (InDesign.TextFrame)page.TextFrames[4];
@@ -35,7 +38,7 @@ namespace CarWashService.Reports
             InDesign.TextFrame dateRangeFrame = (InDesign.TextFrame)page.TextFrames[2];
             dateRangeFrame.Contents = $"{startDate.ToShortDateString()} - {endDate.ToShortDateString()}";
 
-            doc.Export(PdfType, string.Format(PdfFilePathTemplate,
+            doc.Export(reportsConfiguration.PdfType, string.Format(reportsConfiguration.AppointmentsPdfFilePathTemplate,
                 startDate.ToShortDateString(), endDate.ToShortDateString()));
         }
 
